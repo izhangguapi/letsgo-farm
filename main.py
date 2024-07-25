@@ -1,35 +1,8 @@
 import os, time
+from walk import *
+from myTools import *
+from identify import *
 import pyautogui as pg
-
-
-class ANSI:
-    RED = "\033[31m"
-    GREEN = "\033[32m"
-    RESET = "\033[m"
-
-
-def print_red(text):
-    """打印红色文本"""
-    print(ANSI.RED + text + ANSI.RESET)
-
-
-def print_green(text):
-    """打印绿色文本"""
-    print(ANSI.GREEN + text + ANSI.RESET)
-
-
-def get_date():
-    """获取当前日期和时间"""
-    return pg.time.strftime("%Y年%m届%d日 %H:%M:%S - ", pg.time.localtime())
-
-
-def sleep(seconds):
-    """休眠的异常处理"""
-    try:
-        time.sleep(seconds)
-    except:
-        print_red("程序被强制退出")
-        exit()
 
 
 # 已弃用
@@ -60,16 +33,16 @@ def sleep(seconds):
 
 
 def open_ymzx():
-    """打开元梦，耗时2秒"""
+    """打开元梦"""
     os.system("open -a '元梦之星-云游戏-快捷方式'")
-    print(get_date() + "打开元梦")
+    print_nol("打开元梦")
     sleep(1)
 
 
 def open_browser():
-    """打开抖音，耗时1秒"""
+    """打开抖音"""
     os.system("open -a 'Google Chrome'")
-    print(get_date() + "打开浏览器")
+    print_nol("打开浏览器")
     sleep(1)
     pg.press("down")
     sleep(1)
@@ -77,63 +50,139 @@ def open_browser():
 
 
 def farm():
-    """收获农场，耗时1秒"""
+    """收获农场"""
     # print("收获农场")
     # x, y = 1360, 715
     # pg.click(x, y)
-    print(get_date() + "收获农场中...")
+    print_nol("收获农场中...")
     pg.press("Q")
-    sleep(1)
+
 
 
 def pasture():
-    """收获牧场，耗时1秒"""
+    """收获牧场"""
     # x, y = 1540, 640
     # pg.click(x, y)
-    print(get_date() + "收获牧场中...")
+    print_nol("收获牧场中...")
     pg.press("E")
+
+
+
+def fishery():
+    """收获渔场"""
+    print_nol("走到渔场")
+    go_to_fishery()
+
+    try:
+        print_nol("识别是否能够钓鱼")
+        screenshot("harvest_fish")
+    except:
+        print_red("不能钓鱼，检测还剩多少时间成熟")
+        try:
+            screenshot("fishery")
+            time, spend = OCR_time("fishery")
+            if time < 60:
+                print_nol("等待{}秒后开始钓鱼".format(time - spend))
+                sleep(time - spend)
+            else:
+                print_red("等待时间超过1分钟，跳过")
+                return
+        except:
+            print_red("识别失败，可能未洒饵，按下空格")
+            pg.press("space")
+            return
+
+    for i in range(2):
+        img_path = "images/fishing.png"
+        try:
+            print_nol("开始寻找钓鱼按钮")
+            pg.locateOnScreen(img_path, confidence=0.7)
+        except:
+            print_red("未找到重新寻找")
+
+        print_green("开始钓鱼")
+        pg.press("space")
+
+        img_path = "images/fishing_ok.png"
+        while True:
+            sleep(1)
+            try:
+                pg.locateOnScreen(img_path, confidence=0.7)
+                print_green("上鱼了，开始抬竿")
+                pg.press("space")
+                break
+            except:
+                print_red("还没上鱼，还不能抬竿")
+        print_nol("等待6秒")
+        pg.sleep(6)
+        print_nol("连按空格")
+        pg.press("space", presses=3, interval=0.5)
+
     sleep(1)
+    # 检测是否钓鱼完成，可以撒饵
+    print_nol("检测钓鱼是否完成")
+    sleep(1)
+    try:
+        img_path = "images/fishery.png"
+        pg.locateOnScreen(img_path, confidence=0.9)
+        print_green("已经洒饵，钓鱼结束")
+    except:
+        print_nol("洒饵")
+        pyautogui.press("space")
+        print_nol("钓鱼结束")
 
 
 def find_drones():
-    """寻找无人机，耗时2秒"""
+    """寻找无人机"""
     # 重置位置后，按下a键一秒钟
-    print(get_date() + "寻找无人机...")
-    pg.press("r")
+    print_nol("寻找无人机...")
+    pg.press("r", presses=2, interval=0.5)
     pg.keyDown("a")
     sleep(1)
     pg.keyUp("a")
-    print(get_date() + "找到无人机")
+    print_nol("找到无人机")
 
 
 def start():
-    print_red(get_date() + "开始执行")
+    print_red("开始执行")
     num = 1
     while True:
-        print_green(get_date() + "第{}次执行".format(num))
+        print_green("第{}次执行".format(num))
 
-        # 收获农场
+        # 检测农场
+        timestamp_start = time.time()
         open_ymzx()
         find_drones()
         farm()
+        # 检测渔场
+        fishery()
         open_browser()
-        print(get_date() + "休息2分钟...")
-        # 休息2分钟
-        sleep(120)
+        # 计算耗时
+        timestamp_end = time.time()
+        computation_time = round(timestamp_end - timestamp_start, 2)
+        print_nol("收获农场和渔场耗时：{}秒".format(computation_time))
+        print_green("休息{}秒...".format(120 - computation_time))
+        sleep(120 - computation_time)
 
-        # 收获牧场
+        # 检测牧场
+        timestamp_start = time.time()
         open_ymzx()
         find_drones()
         pasture()
+        # 检测渔场
+        fishery()
         open_browser()
+        # 计算耗时
+        timestamp_end = time.time()
+        computation_time = round(timestamp_end - timestamp_start, 2)
+        print_nol("收获农场和渔场耗时：{}秒".format(computation_time))
+        print_green("休息{}秒...".format(120 - computation_time))
+        sleep(120 - computation_time)
 
         # 判断是否执行了11次的倍数
         if num % 11 == 0:
-            print_red(get_date() + "已收获{}波".format(num // 11))
+            print_red("大概收获{}波".format(num // 11))
         num += 1
-        print(get_date() + "休息2分钟...")
-        # 休息2分钟左右（时间根据实际情况调整，尽量控制浇水后时间减少的是一分钟）
-        sleep(110)
 
 
 if __name__ == "__main__":
