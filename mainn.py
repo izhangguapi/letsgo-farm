@@ -1,4 +1,7 @@
 import os, time
+from walk import *
+from myTools import *
+from identify import *
 import pyautogui as pg
 
 
@@ -21,15 +24,6 @@ def print_green(text):
 def get_date():
     """获取当前日期和时间"""
     return pg.time.strftime("%Y年%m届%d日 %H:%M:%S - ", pg.time.localtime())
-
-
-def sleep(seconds):
-    """休眠的异常处理"""
-    try:
-        time.sleep(seconds)
-    except:
-        print_red("程序被强制退出")
-        exit()
 
 
 def open_ymzx():
@@ -90,7 +84,7 @@ def start():
         if num % 11 == 0:
             print_red(get_date() + "已收获{}波".format(num // 11))
         num += 1
-        
+
         # 休息2分钟左右（时间根据实际情况调整，尽量控制浇水后时间减少的是一分钟）
         print(get_date() + "休息2分钟...")
         sleep(118)

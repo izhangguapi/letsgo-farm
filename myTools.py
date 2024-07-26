@@ -1,5 +1,4 @@
-import os, time
-import pyautogui as pg
+import datetime,time
 
 
 class ANSI:
@@ -10,7 +9,7 @@ class ANSI:
 
 def get_date():
     """获取当前日期和时间"""
-    return pg.time.strftime("[%Y-%m-%d %H:%M:%S] - ", pg.time.localtime())
+    return "[" + str(datetime.datetime.now()) + "] - "
 
 
 def print_red(text):
