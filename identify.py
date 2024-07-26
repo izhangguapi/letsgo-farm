@@ -2,12 +2,20 @@ from paddleocr import PaddleOCR
 import pyautogui, os
 # import cv2
 
+# 识别钓鱼按钮
+def identify_img(img, confidence):
+    """识别图片"""
+    img_path = "images/identify/" + img + ".png"
+    pyautogui.locateOnScreen(img_path, confidence=confidence)
+
+
+    
 
 def screenshot(img):
     """
     截图并保存
     """
-    img_path = "images/" + img + ".png"
+    img_path = "images/identify/" + img + ".png"
     location = pyautogui.locateOnScreen(img_path, confidence=0.8)
 
     # 苹果系统专用，没有次行代码会导致截图位置错误，Windows未测试，如果出现截图不正确请注释下一行
@@ -60,7 +68,7 @@ def OCR_time(img):
 
     print("将图片中时间", time, "转为秒：", seconds)
     print("图片识别耗时：", spend, "秒")
-    return seconds, spend
+    return seconds
 
 
 # os.system("open -a '元梦之星-云游戏-快捷方式'")
