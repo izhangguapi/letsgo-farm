@@ -1,4 +1,4 @@
-import datetime,time
+import datetime, time, pyautogui
 
 
 class ANSI:
@@ -33,3 +33,38 @@ def sleep(seconds):
     except:
         print_red("程序被强制退出")
         exit()
+
+
+# 走到渔场
+def go_to_fishpond():
+    pyautogui.press("r")
+    pyautogui.keyDown("a")
+    pyautogui.keyDown("w")
+    sleep(0.6)
+    pyautogui.keyUp("a")
+    sleep(6)
+    pyautogui.keyUp("w")
+    # sleep(1)
+
+
+# 农场农场
+def go_to_farm():
+    pyautogui.press("r")
+    pyautogui.keyDown("a")
+    pyautogui.keyDown("w")
+    sleep(4.5)
+    pyautogui.keyUp("a")
+    pyautogui.keyUp("w")
+    # sleep(1)
+
+
+# 走到牧场
+def go_to_pasture():
+    pyautogui.press("r")
+    pyautogui.keyDown("w")
+    sleep(0.7)
+    pyautogui.keyDown("d")
+    sleep(1.3)
+    pyautogui.keyUp("d")
+    pyautogui.keyUp("w")
+    # sleep(1)

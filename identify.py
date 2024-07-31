@@ -1,5 +1,8 @@
 from paddleocr import PaddleOCR
-import pyautogui, os
+import pyautogui, os,time
+from tqdm import tqdm
+from myTools import *
+
 
 # import cv2
 
@@ -8,13 +11,15 @@ import pyautogui, os
 def identify_img(img, confidence):
     """识别图片"""
     img_path = "images/identify/" + img + ".png"
-    pyautogui.locateOnScreen(img_path, confidence=confidence)
-
-
-def identify_img_show(img, confidence):
-    """识别图片"""
-    img_path = "images/identify/" + img + ".png"
     location = pyautogui.locateOnScreen(img_path, confidence=confidence)
+    # location = (location[0] // 2, location[1] // 2, location[2] // 2, location[3] // 2)
+    return location
+
+
+
+
+def screenshot_show(location):
+    """截图并显示"""
     location = (location[0] // 2, location[1] // 2, location[2] // 2, location[3] // 2)
     image = pyautogui.screenshot(region=location)
     image.show()  # 显示图片
@@ -83,11 +88,13 @@ def OCR_time(img):
 """
 农场:farm
 牧场:pasture
-渔场:fishery
+鱼塘:fishpond
 """
 # os.system("open -a '元梦之星-云游戏-快捷方式'")
 # pyautogui.sleep(1)
+# go_to_fishery()
+# identify_img_show("fishing", 0.8)
+# identify_img("fishing", 0.8)
 # screenshot("pasture")
 # OCR_time("pasture")
-# identify_img("fishing", 0.5)
-# identify_img_show("fishing_ok", 0.8)
+# identify_img("fishing", 0.8)

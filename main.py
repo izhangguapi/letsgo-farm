@@ -1,4 +1,3 @@
-from walk import *
 from myTools import *
 from identify import *
 
@@ -33,9 +32,8 @@ from identify import *
 def open_ymzx():
     """打开元梦"""
     os.system("open -a '元梦之星-云游戏-快捷方式'")
-    print_nol("打开元梦")
+    print_nol("打开元梦之星")
     sleep(1)
-    pyautogui.press("r", presses=2, interval=0.5)
 
 
 def open_browser():
@@ -48,12 +46,45 @@ def open_browser():
     pyautogui.press("up")
 
 
+def find_drones():
+    """寻找无人机"""
+    # 重置位置后，按下a键一秒钟
+    pyautogui.press("r", presses=2, interval=0.5)
+    print_nol("寻找无人机")
+    pyautogui.keyDown("a")
+    sleep(1)
+    pyautogui.keyUp("a")
+
+
+def check_fram():
+    """检查农场是否执行完成"""
+    duration = 60
+    timeout = duration
+    with tqdm(total=duration) as pbar:
+        pbar.set_description("等待农场执行...")
+        for _ in range(duration):
+            try:
+                identify_img("farm_running", 0.9)
+                pbar.update(timeout)
+                break
+            except:
+                sleep(0.5)
+                pbar.update(1)
+                timeout -= 1
+                sleep(1)
+    if timeout <= 0:
+        print_red("超时退出")
+        return
+    print_green("农场执行完成")
+
+
 def farm():
     """无人机前往农场"""
     # print("收获农场")
     # x, y = 1360, 715
     # pyautogui.click(x, y)
-    print_nol("无人机前往牧场农场")
+    find_drones()
+    print_nol("无人机前往农场工作")
     pyautogui.press("Q")
 
 
@@ -61,93 +92,97 @@ def pasture():
     """无人机前往牧场"""
     # x, y = 1540, 640
     # pyautogui.click(x, y)
-    print_nol("无人机前往牧场")
+    find_drones()
+    check_fram()
+    print_nol("无人机前往牧场工作")
     pyautogui.press("E")
 
 
-def fishery():
+def fishpond():
     """收获渔场"""
-    print_nol("走到渔场")
-    go_to_fishery()
+    print_nol("正在走到渔场...")
+    go_to_fishpond()
     try:
-        print_nol("识别是否能够钓鱼")
-        identify_img("fishing", 0.8)
-    except:
-        print_red("不能钓鱼，检测还剩多少时间成熟")
-        try:
-            screenshot_save("fishery")
-            time = OCR_time("fishery")
-            if time < 210:
-                t = time - 7
-                specific_time = datetime.datetime.now() + datetime.timedelta(seconds=t)
-                print_nol("等待{}秒后开始钓鱼具体时间为{}".format(t, specific_time))
-                sleep(t)
-                go_to_fishery()
-            else:
-                print_red("等待时间超过3分半，跳过")
-                return
-        except:
-            print_red("识别失败，可能未洒饵，按下空格洒饵")
-            pyautogui.press("space")
+        print_green("开始识别成熟时间")
+        screenshot_save("fishpond")
+        time = OCR_time("fishpond")
+        if time < 120:
+            t = time - 7
+            specific_time = datetime.datetime.now() + datetime.timedelta(seconds=t)
+            print_nol("等待{}秒后开始钓鱼具体时间为{}".format(t, specific_time))
+            sleep(t)
+            go_to_fishpond()
+        else:
+            print_red("等待时间超过2分钟，跳过")
             return
+    except:
+        print_red("识别失败")
 
     for _ in range(2):
+        try:
+            print_nol("检测能否能够钓鱼...")
+            identify_img("fishing", 0.7)
+        except:
+            print_red("不能钓鱼，进行撒饵")
+            pyautogui.press("space")
+            print_green("钓鱼结束")
+            return
+
         print_green("开始钓鱼")
         pyautogui.press("space")
 
-        for j in range(5):
-            sleep(0.5)
-            try:
-                identify_img("fishing_ok", 0.8)
-                print_green("上鱼了，开始抬竿")
-                pyautogui.press("space")
-                break
-            except:
-                print_red("还没上鱼，还不能抬竿")
-                if j == 4:
-                    print_red("等待超时，自动抬竿")
-                    pyautogui.press("space")
+        duration = 40
+        timeout = duration
+        with tqdm(total=duration) as pbar:
+            pbar.set_description("等待上鱼...")
+            for _ in range(duration):
+                sleep(0.2)
+                try:
+                    identify_img("fishing_ok", 0.8)
+                    pbar.update(timeout)
                     break
-
-        print_nol("等待6秒")
-        pyautogui.sleep(6)
-        print_nol("连按空格")
-        pyautogui.press("space", presses=6, interval=0.5)
+                except:
+                    pbar.update(1)
+                    timeout -= 1
+            if timeout <= 0:
+                print_red("等待超时")
+                return
+        print_green("上鱼了，开始抬竿")
+        pyautogui.press("space")
+        print_nol("等待7秒")
+        sleep(7)
+        print_nol("跳过钓鱼结算界面")
+        pyautogui.press("g", presses=5, interval=1)
 
     # 检测是否钓鱼完成，可以撒饵
-    print_nol("检测钓鱼是否完成")
-    try:
-        identify_img("fishing", 0.8)
-        print_nol("洒饵")
-        pyautogui.press("space")
-        print_nol("钓鱼结束")
-    except:
-        print_green("已经洒饵，钓鱼结束")
+    # try:
+    #     sleep(1)
+    #     print_nol("检测是否撒饵")
+    #     identify_img("fishpond_level", 0.7)
+    #     print_green("撒饵")
+    #     pyautogui.press("space")
 
-
-def find_drones():
-    """寻找无人机"""
-    # 重置位置后，按下a键一秒钟
-    pyautogui.press("r")
-    print_nol("寻找无人机")
-    pyautogui.keyDown("a")
-    sleep(1)
-    pyautogui.keyUp("a")
+    # except:
+    #     print_green("已经撒饵，钓鱼结束")
 
 
 def start():
-    print_red("开始执行")
+    open_ymzx()
+    # print_green("3秒后开始执行")
+    # sleep(3)
     # num = 1
     while True:
         # print_green("第{}次执行".format(num))
-
+        timestamp_start = datetime.datetime.now()
         # # 检测农场
         # timestamp_start = time.time()
         # open_ymzx()
-        # find_drones()
-        # farm()
-        # # 检测渔场
-        # fishery()
+        # go_to_farm()
+
+        farm()
+        fishpond()
+        pasture()
+        # 检测渔场
         # open_browser()
         # # 计算耗时
         # timestamp_end = time.time()
@@ -157,22 +192,18 @@ def start():
         # sleep(120 - computation_time)
 
         # 检测牧场
-        timestamp_start = datetime.datetime.now()
         # open_ymzx()
-        find_drones()
-        pasture()
+
         # 检测渔场
-        fishery()
+        # fishpond()
         # open_browser()
         # 计算耗时
         timestamp_end = datetime.datetime.now()
         computation_time = timestamp_end - timestamp_start
         # computation_time = round(timestamp_end - timestamp_start, 2)
-        t = 300 - computation_time.total_seconds()
+        t = 240 - computation_time.total_seconds()
         print_nol(
-            "收获农场和渔场耗时：{}秒".format(
-                round((computation_time).total_seconds(), 2)
-            )
+            "本次任务耗时：{}秒".format(round((computation_time).total_seconds(), 2))
         )
         print_green(
             "休息{}秒，下次运行时间：{}".format(
@@ -189,5 +220,5 @@ def start():
 
 if __name__ == "__main__":
     # 执行任务
-    open_ymzx()
+    # open_ymzx()
     start()
