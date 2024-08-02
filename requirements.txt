@@ -1,3 +1,6 @@
 pyautogui
 paddlepaddle
 paddleocr
+setuptools
+tkinter
+psutil
