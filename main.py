@@ -3,36 +3,62 @@ import threading
 import letsgoFarm
 
 
-def run_program():
+def run_letsgoFarm():
     """启动多线程程序"""
-    button_run.config(state="disabled")
-    print_log("启动", "green")
+    btn_run.config(state="disabled")
+    btn_gotofarm.config(state="disabled")
+    btn_gotopasture.config(state="disabled")
+    btn_gotofishpond.config(state="disabled")
+    print_log("启动多线程", "green")
     thread = threading.Thread(target=lambda: letsgoFarm.start())
+    thread.daemon = True
+    thread.start()
+
+
+def btn_farm():
+    print_log("请在3秒内点击游戏画面", "green")
+    thread = threading.Thread(target=lambda: go_to_farm())
+    thread.daemon = True
+    thread.start()
+
+
+def btn_pasture():
+    print_log("请在3秒内点击游戏画面", "green")
+    thread = threading.Thread(target=lambda: go_to_pasture())
+    thread.daemon = True
+    thread.start()
+
+
+def btn_fishpond():
+    print_log("请在3秒内点击游戏画面", "green")
+    thread = threading.Thread(target=lambda: go_to_fishpond())
     thread.daemon = True
     thread.start()
 
 
 # 创建一个窗口并设置窗口的标题
 window = create_window("星宝农场自动化")
-# window = tk.Tk()
-# window.title()
-# 创建一个列表框
-create_listbox()
-# listbox = tk.Listbox(window, height=5, width=80, font=("Arial", 12))
-# listbox.grid(row=0, column=0, columnspan=2, sticky="nsew")
 
+# 创建一个列表框，第一行
+create_listbox()
+
+# 创建一个进度条，第二行
 create_progressbar()
 
-# 创建两个按钮，启动和退出
-button_run = tk.Button(
-    window, text="启动", fg="green", state="active", command=lambda: run_program()
-)
-button_run.grid(row=2, column=0, pady=(0, 5))
-button_quit = tk.Button(window, text="退出", fg="red", command=window.quit)
-button_quit.grid(row=2, column=1, pady=(0, 5))
+# 创建三个按钮，前往农场，前往牧场，前往鱼塘，第三行
+btn_gotofarm = create_button("前往农场", 2, 0)
+btn_gotofarm.config(command=lambda: btn_farm())
+btn_gotopasture = create_button("前往牧场", 2, 1)
+btn_gotopasture.config(command=lambda: btn_pasture())
+btn_gotofishpond = create_button("前往鱼塘", 2, 2)
+btn_gotofishpond.config(command=lambda: btn_fishpond())
 
-# button = tk.Button(window, text="增加", command=lambda: update_progressbar(1))
-# button.grid(row=3, column=1, pady=(0, 5))
+# 创建两个按钮，启动和退出，第四行
+btn_run = create_button("开始挂机", 3, 0)
+btn_run.config(command=lambda: run_letsgoFarm())
+btn_quit = create_button("退出", 3, 1)
+btn_quit.config(command=window.quit)
+
 
 # 置顶窗口
 window.attributes("-topmost", True)

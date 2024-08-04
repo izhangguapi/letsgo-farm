@@ -26,19 +26,19 @@
    ```
    如果长时间没有安装完成，请换成国内源(任选其一)：
    ```shell
-   pip3 install -r requirements.txt -i https://pypi.mirrors.ustc.edu.cn/simple/
+   pip3 install -r requirements.txt -i https://pypi.mirrors.ustc.edu.cn/simple
    ```
    ```shell
-   pip3 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
+   pip3 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
    ```
    ```shell
-   pip3 install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
+   pip3 install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple
    ```
    ```shell
-   pip3 install -r requirements.txt -i https://pypi.douban.com/simple/
+   pip3 install -r requirements.txt -i https://pypi.douban.com/simple
    ```
    ```shell
-   pip3 install -r requirements.txt -i https://pypi.mirrors.ustc.edu.cn/simple/
+   pip3 install -r requirements.txt -i https://pypi.mirrors.ustc.edu.cn/simple
    ```
 2. 用浏览器打开[元梦之星-云游戏](https://gamer.qq.com/v2/cloudgame/game/96897)
 
@@ -59,7 +59,11 @@
 
 ## 更新记录
 
-2024-08-02: 命令窗口改为GUI，修改日志在窗口显示，添加日志文件，修改钓鱼点位。
+2024-08-04: 修复了等待钓鱼时间结束后不会钓鱼的问题。
+
+2024-08-03: 新增识别农场成熟时间的功能，合理分配时间，新增三个按钮走到对应点位。
+
+2024-08-02: 命令窗口改为GUI，修改日志在窗口显示，添加日志文件，修改钓鱼点位。修复windows系统下出现`[Errno 22] Invalid argument`报错的问题。
 
 2024-08-01: 修复鱼塘出现大丰收之后不能钓鱼的问题，修复农场操作按钮识别成牧场的问题。
 
@@ -81,4 +85,4 @@
 
 在窗口中添加截图功能，截图功能可以自行替换掉需要识别的图片。
 
-增加识别农场和牧场的功能（目前只识别鱼塘）
+~~增加识别牧场的功能~~（目前只识别鱼塘和农场）

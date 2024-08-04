@@ -1,10 +1,13 @@
-from myTools import *
-import os
+# from myTools import *
+# import os
+
+
 
 
 # print(get_datetime())
 # os.system("open -a '元梦之星-云游戏-快捷方式'")
 # sleep(1)
+# go_to_fishpond()
 # pyautogui.press("r")
 # # print_log("正在走到鱼塘...")
 # pyautogui.keyDown("w")
@@ -96,42 +99,9 @@ import os
 # print()
 
 
-# import psutil
-
-# # 获取所有进程信息
-# proc = psutil.Process(25043)
-# print(proc.cmdline())
 
 
-# # 假设我们要获取PID为1234的进程的所有子孙进程
-# pid = 25043
 
-# # 使用psutil获取指定PID的进程
-# parent_process = psutil.Process(pid)
-
-# # 获取子孙进程列表
-# children_processes = parent_process.children(recursive=True)
-
-# # 打印子孙进程的PID
-# for child in children_processes:
-#     print(child.pid,child.name())
-
-# import psutil
-
-# # 获取当前所有进程的信息
-# for proc in psutil.process_iter(['name', 'pid']):
-#     print(proc.info)
-
-# 或者只获取指定属性
-# for proc in psutil.process_iter(['name', 'exe']):
-#     print(proc.info)
-
-# 也可以通过进程ID获取单个进程的信息
-# pid = os.getpid()
-# process = psutil.Process(pid)
-# print(process.name())
-# print(process.exe())
-# print(process.cmdline())
 
 # import tkinter, time
 # from tkinter import ttk
