@@ -26,13 +26,13 @@
    ```
    如果长时间没有安装完成，请换成国内源(任选其一)：
    ```shell
+   pip3 install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple
+   ```
+   ```shell
    pip3 install -r requirements.txt -i https://pypi.mirrors.ustc.edu.cn/simple
    ```
    ```shell
    pip3 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
-   ```
-   ```shell
-   pip3 install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple
    ```
    ```shell
    pip3 install -r requirements.txt -i https://pypi.douban.com/simple
@@ -48,6 +48,7 @@
 
 4. 自行在游戏中截图，替换掉`images/identify/`文件夹中的所有图片
 5. 在identify.py中根据自身系统注释掉相应的代码
+6. 在游戏中添加一个键位G，移动到空白区域（跳过钓鱼用的）
 
 ## 如何使用
 
@@ -58,6 +59,12 @@
 5. 运行程序（main.py）
 
 ## 更新记录
+
+2024-08-08: 取消农场识别后浇水（代码还在懂的可自行修改），改为等待105秒。
+
+2024-08-05: 
+
+2024-08-05: 将time.sleep()函数改为threading.Event().wait()多线程阻塞。
 
 2024-08-04: 修复了等待钓鱼时间结束后不会钓鱼的问题。
 
@@ -83,6 +90,16 @@
 
 ## 后续计划
 
+无月卡版
+
 在窗口中添加截图功能，截图功能可以自行替换掉需要识别的图片。
 
 ~~增加识别牧场的功能~~（目前只识别鱼塘和农场）
+
+## 郑重声明
+
+- 本软件属于免费软件，禁止任何形式的出售或者商业使用。
+- 本软件的使用不会收集用户的任何个人信息，尊重并保护用户的隐私权。
+- 本软件的开发和维护团队有权对软件进行更新和改进，以提供更好的用户体验。
+- 用户在使用本软件时，应遵守相关法律法规，不得利用本软件进行任何违法活动。
+- 本软件的所有功能都是免费提供的，除了作者提供的安装服务，不会有任何隐藏的收费项。

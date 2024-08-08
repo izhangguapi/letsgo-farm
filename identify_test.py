@@ -10,15 +10,15 @@ from myTools import *
 鱼塘等级:fishpond_level
 无人机(用于识别按钮):drone
 """
-os.system("open -a '元梦之星-云游戏-快捷方式'")
-pyautogui.sleep(2)
+# os.system("open -a '元梦之星-云游戏-快捷方式'")
+# pyautogui.sleep(2)
 # go_to_farm()
 # screenshot_save("farm")
-# OCR_time("farm")
+OCR_time("farm")
 
 # go_to_fishpond()
 # identify_img("farm_running", 0.8)
-screenshot_show(identify_img("farm_running", 0.8))
+# screenshot_show(identify_img("farm_running", 0.8))
 # OCR_time("fishpond")
 
 # for i in range(10):

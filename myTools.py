@@ -1,4 +1,4 @@
-import datetime, time, pyautogui
+import datetime, pyautogui, threading
 import tkinter as tk
 from tkinter import ttk
 
@@ -8,16 +8,26 @@ def get_datetime():
     return str(datetime.datetime.now())
 
 
-def sleep(seconds):
+exit_event = threading.Event()
+
+
+def stop_letsgoFarm(btn_a, btn_d):
+    """停止程序"""
+    exit_event.set()
+    btn_disable(btn_d)
+    btn_active(btn_a)
+
+
+def sleep(s):
     """休眠的异常处理"""
-    if seconds < 0:
+    if exit_event.is_set():
+        print_log("停止挂机", "red")
+        exit()
+    elif s < 0:
         print_log("休眠时间小于0，跳过", "red")
         return
-    try:
-        time.sleep(seconds)
-    except:
-        print_log("程序被强制退出", "red")
-        exit()
+    else:
+        exit_event.wait(s)
 
 
 # 日志名称
@@ -32,64 +42,6 @@ def save_log(text):
         f.write(text + "\n")
 
 
-def go_to_farm():
-    """走到农场"""
-    print_log("等待3秒...", "red")
-    create_progressbar()
-    for _ in range(3):
-        sleep(1)
-        update_progressbar(100)
-    pyautogui.press("r")
-    print_log("开始走到农场...")
-    pyautogui.keyDown("a")
-    pyautogui.keyDown("w")
-    sleep(4.3)
-    pyautogui.keyUp("a")
-    pyautogui.keyUp("w")
-    print_log("到达农场", "green")
-    # sleep(1)
-
-
-def go_to_pasture():
-    """走到牧场"""
-    print_log("等待3秒...", "red")
-    create_progressbar()
-    for _ in range(3):
-        sleep(1)
-        update_progressbar(100)
-    pyautogui.press("r")
-    print_log("开始走到牧场...")
-    pyautogui.keyDown("w")
-    sleep(0.8)
-    pyautogui.keyDown("d")
-    sleep(1.2)
-    pyautogui.keyUp("w")
-    pyautogui.keyUp("d")
-    print_log("到达牧场", "green")
-    # sleep(1)
-
-
-def go_to_fishpond():
-    """走到鱼塘，耗时8.9秒"""
-    print_log("等待3秒...", "red")
-    create_progressbar()
-    for _ in range(3):
-        sleep(1)
-        update_progressbar(100)
-    pyautogui.press("r")
-    print_log("开始走到鱼塘...")
-    pyautogui.keyDown("w")
-    pyautogui.keyDown("a")
-    sleep(0.5)
-    pyautogui.keyUp("a")
-    sleep(2.2)
-    pyautogui.keyDown("d")
-    sleep(0.8)
-    pyautogui.keyUp("d")
-    sleep(2.4)
-    pyautogui.keyUp("w")
-    print_log("到达鱼塘", "green")
-    # sleep(1)
 
 
 def create_window(title):
@@ -100,11 +52,18 @@ def create_window(title):
     return window
 
 
+def create_listbox():
+    """创建列表框"""
+    global lb
+    lb = tk.Listbox(window, height=5, width=80, font=("Arial", 12))
+    lb.grid(row=0, column=0, columnspan=4, sticky="nsew")
+
+
 def create_progressbar():
     """创建进度条"""
     global p
     p = ttk.Progressbar(window, maximum=300, value=0, mode="determinate")
-    p.grid(row=1, column=0, columnspan=3, padx=10, sticky="nsew")
+    p.grid(row=1, column=0, columnspan=4, padx=10, sticky="nsew")
 
 
 def create_button(text, row, column):
@@ -112,6 +71,16 @@ def create_button(text, row, column):
     btn = tk.Button(window, text=text)
     btn.grid(row=row, column=column, pady=(0, 5))
     return btn
+
+
+def btn_active(btn_list):
+    for btn in btn_list:
+        btn.config(state="active")
+
+
+def btn_disable(btn_list):
+    for btn in btn_list:
+        btn.config(state="disabled")
 
 
 def update_progressbar(num):
@@ -126,13 +95,6 @@ def clear_progressbar():
     window.update()
 
 
-def create_listbox():
-    """创建列表框"""
-    global lb
-    lb = tk.Listbox(window, height=5, width=80, font=("Arial", 12))
-    lb.grid(row=0, column=0, columnspan=3, sticky="nsew")
-
-
 def delete_top_item():
     """超过100行就删除顶部的"""
     if len(lb.get(0, tk.END)) > 100:
@@ -141,7 +103,7 @@ def delete_top_item():
 
 def print_log(text, fg="black"):
     """打印日志"""
-    log = "[" + get_datetime() + "] - " + text
+    log = "[" + get_datetime() + "] - " + str(text)
     try:
         lb.insert(tk.END, log)
         lb.itemconfigure(tk.END, fg=fg)
