@@ -91,7 +91,8 @@ def fishpond_work():
     find_drone()
     print_log("无人机前往鱼塘工作")
     pyautogui.press("F")
-    sleep(12)
+    pyautogui.press("g", presses=60, interval=0.2)
+    
 
 
 def farm():
