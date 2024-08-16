@@ -26,8 +26,11 @@ def sleep(s):
     elif s < 0:
         print_log("休眠时间小于0，跳过", "red")
         return
-    else:
+    try:
         exit_event.wait(s)
+    except Exception as e:
+        print_log(f"休眠异常，退出程序：{e}", "red")
+        exit()
 
 
 # 日志名称
@@ -40,8 +43,6 @@ def save_log(text):
     path = "log/" + log_name + ".txt"
     with open(path, "a+", encoding="utf-8") as f:
         f.write(text + "\n")
-
-
 
 
 def create_window(title):

@@ -7,7 +7,6 @@ def run_letsgoFarm(btn_a, btn_d):
     """开始挂机"""
     btn_active(btn_a)
     btn_disable(btn_d)
-    print_log("开始挂机", "green")
     exit_event.clear()
     thread = threading.Thread(target=lambda: lf.start())
     thread.daemon = True
@@ -17,7 +16,6 @@ def run_letsgoFarm(btn_a, btn_d):
 def threading_fun(fun):
     print_log("请在3秒内点击游戏画面", "green")
     exit_event.clear()
-
     thread = threading.Thread(target=lambda: fun())
     create_progressbar()
     for _ in range(6):
@@ -30,6 +28,7 @@ def threading_fun(fun):
 def fish():
     print_log("请在3秒内点击游戏画面", "green")
     exit_event.clear()
+    exit_event.wait(3)
     value = combo.get()
     print_log("选择的是钓鱼{}次".format(value))
     exit_event.clear()

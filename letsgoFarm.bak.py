@@ -49,13 +49,13 @@ def go_to_pasture():
 
 def go_to_fishpond():
     """走到鱼塘"""
-    pyautogui.press("r", presses=2, interval=0.5)
+    pyautogui.press("r")
     print_log("开始走到鱼塘...")
     pyautogui.keyDown("w")
     pyautogui.keyDown("a")
-    sleep(0.6)
+    sleep(0.5)
     pyautogui.keyUp("a")
-    sleep(5.8)
+    sleep(5.7)
     pyautogui.keyUp("w")
     print_log("到达鱼塘", "green")
     # sleep(1)
@@ -85,13 +85,6 @@ def pasture_work():
     find_drone()
     print_log("无人机前往牧场工作")
     pyautogui.press("E")
-
-def fishpond_work():
-    """无人机前往鱼塘"""
-    find_drone()
-    print_log("无人机前往鱼塘工作")
-    pyautogui.press("F")
-    sleep(12)
 
 
 def farm():
@@ -176,22 +169,21 @@ def fishpond():
         print_log("正在识别鱼塘成熟时间...")
         screenshot_save("fishpond")
         time = OCR_time("fishpond")
-        if time < 360:
-            t = time - 2
+        if time < 120:
+            t = time - 8
             specific_time = datetime.datetime.now() + datetime.timedelta(seconds=t)
             print_log(
                 "等待{}秒后开始钓鱼具体时间为{}".format(t, specific_time), "green"
             )
             sleep(t)
-            fishpond_work()
-            return True
+            go_to_fishpond()
+            fishing()
         else:
-            print_log("等待时间超过360秒，跳过", "red")
-            return False
+            print_log("等待时间超过2分钟，跳过", "red")
+            return
     except:
-        fishpond_work()
-        return True
-
+        print_log("识别失败", "red")
+        fishing()
 
 
 def start():
@@ -201,21 +193,27 @@ def start():
     # windows用户
     # print_log("请在5秒内打开元梦之星")
     # sleep(5)
-    count = 1
     while not exit_event.is_set():
         start_time = datetime.datetime.now()
-        # 执行鱼塘工作
-        if fishpond():
-            start_time = datetime.datetime.now()   
+        # 识别农场进行工作
+        # wait_s = farm()
+        # 执行牧场工作
+        farm_work()
+        # 收获鱼塘
+        fishpond()
+        # 计算耗时
+        t = start_time + datetime.timedelta(seconds=105)
+        wait = (t - datetime.datetime.now()).total_seconds()
+        print_log("等待{}秒后前往牧场".format(wait))
+        print_log("具体时间为：{}".format(t), "green")
+        if wait > 0:
+            sleep(wait)
         # 执行牧场工作
         pasture_work()
-        sleep(30)
-        # 执行农场工作
-        farm_work()
         # 计算耗时
         end_time = datetime.datetime.now()
         computation_time = end_time - start_time
-        t = 540 - computation_time.total_seconds()
+        t = 300 - computation_time.total_seconds()
         print_log(
             "本次任务耗时：{}秒，休息{}秒，".format(
                 round((computation_time).total_seconds(), 2), t
