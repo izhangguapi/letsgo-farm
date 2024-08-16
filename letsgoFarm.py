@@ -9,16 +9,6 @@ def open_ymzx():
     sleep(1)
 
 
-def open_browser():
-    """打开抖音"""
-    os.system("open -a 'Google Chrome'")
-    print_log("打开浏览器刷抖音")
-    sleep(1)
-    pyautogui.press("down")
-    sleep(1)
-    pyautogui.press("up")
-
-
 def go_to_farm():
     """走到农场"""
     pyautogui.press("r", presses=2, interval=0.5)
@@ -86,51 +76,13 @@ def pasture_work():
     print_log("无人机前往牧场工作")
     pyautogui.press("E")
 
+
 def fishpond_work():
     """无人机前往鱼塘"""
     find_drone()
     print_log("无人机前往鱼塘工作")
     pyautogui.press("F")
     pyautogui.press("g", presses=60, interval=0.2)
-    
-
-
-def farm():
-    # 前往农场第一块地
-    go_to_farm()
-    sleep(1)
-    try:
-        print_log("正在识别农场成熟时间...")
-        screenshot_save("farm")
-        time = OCR_time("farm")
-        # 成熟时间小于2分钟就等待2分钟再启动无人机，等待70秒执行农场
-        if time < 120:
-            # 根据实际情况调整，如果不加时间会导致无人机收获的时间比后续成熟的快，导致后面的作物收获不了
-            specific_time = datetime.datetime.now() + datetime.timedelta(seconds=time)
-            print_log(
-                "等待{}秒后开始收获具体时间为{}".format(time, specific_time), "green"
-            )
-            sleep(time)
-        # 成熟时间小于4分钟就等待4分钟*0.75再启动无人机，等待105秒执行农场
-        elif time < 240:
-            time = time * 0.8
-            specific_time = datetime.datetime.now() + datetime.timedelta(seconds=time)
-            print_log(
-                "等待{}秒后开始收获具体时间为{}".format(time, specific_time), "green"
-            )
-            sleep(time)
-            start_time = farm_work()
-            return start_time + datetime.timedelta(seconds=105)
-        # 成熟时间大于4分钟就直接浇水，等待45秒执行农场
-        else:
-            print_log("等待时间超过4分钟，执行浇水", "red")
-            start_time = farm_work()
-            return start_time + datetime.timedelta(seconds=45)
-    except:
-        print_log("识别失败可能已成熟，操作无人机去农场工作", "red")
-
-    start_time = farm_work()
-    return start_time + datetime.timedelta(seconds=75)
 
 
 def fishing(num=2):
@@ -194,7 +146,6 @@ def fishpond():
         return True
 
 
-
 def start():
     print_log("开始运行", "green")
     # mac用户
@@ -202,12 +153,11 @@ def start():
     # windows用户
     # print_log("请在5秒内打开元梦之星")
     # sleep(5)
-    count = 1
     while not exit_event.is_set():
         start_time = datetime.datetime.now()
         # 执行鱼塘工作
         if fishpond():
-            start_time = datetime.datetime.now()   
+            start_time = datetime.datetime.now()
         # 执行牧场工作
         pasture_work()
         sleep(30)
