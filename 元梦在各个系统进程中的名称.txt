@@ -1,5 +1,0 @@
-win.chrome:
-win.edge:pwahelper.exe
-
-mac.edge:
-mac.chrome:app_mode_loader

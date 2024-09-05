@@ -1,0 +1,11 @@
+{
+    "go_to_fishpond": [
+        {"type": "press","details": "r"},
+        {"type": "down","details": "w"},
+        {"type": "down", "details": "a"},
+        {"type": "sleep", "details": 0.8},
+        {"type": "up", "details": "a"},
+        {"type": "sleep", "details": 6},
+        {"type": "up", "details": "w"}
+    ]
+}
