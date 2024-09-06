@@ -16,7 +16,7 @@ lgf_config = {
     "fishpond_enable": True,
     "fishpond_timer": False,
     "fishpond_time": "",
-    "loop_s": 530,
+    "loop_s": 535,
     "prayers_enable": False,
     "prayers_time": "",
     "prayers_uid": [],
@@ -162,7 +162,6 @@ class WindowController:
         saveDC.SelectObject(saveBitMap)
 
         # 将窗口内容拷贝到位图对象中
-        # result = win32gui.PrintWindow(hwnd, saveDC.GetSafeHdc(), 0)
         # result = ctypes.windll.user32.PrintWindow(self.hwnd, saveDC.GetSafeHdc(), 0)
         saveDC.BitBlt((0, 0), (width, height), mfcDC, (x, y), win32con.SRCCOPY)
         # print("截图结果：", result)
@@ -177,6 +176,7 @@ class WindowController:
         mfcDC.DeleteDC()
         win32gui.ReleaseDC(self.hwnd, hwndDC)
 
+        # print_log("截图结果：", result)
         # if result == 1:
         img = Image.frombuffer(
             "RGB",
@@ -285,7 +285,7 @@ def convert_to_seconds(time):
         print_log(f"转为秒：{seconds}")
         return seconds
     else:
-        return None
+        return 3
 
 
 # def create_window(title):

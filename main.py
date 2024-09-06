@@ -17,7 +17,7 @@ def open_select_window():
         game_rect = win32gui.GetWindowRect(mt.hwnd)
         this_window = win32gui.FindWindowEx(0, 0, None, title)
         x = game_rect[0]
-        y = game_rect[1] + 592
+        y = game_rect[1] + 585
         win32gui.MoveWindow(this_window, x, y, 0, 0, True)
         mt.log_name = (
             str(datetime.datetime.now().strftime("%Y年%m月%d日_%H时%M分%S秒"))
@@ -258,7 +258,7 @@ def creat():
     settings_lf = tk.LabelFrame(window, text="设置", name="设置")
     settings_lf.grid(row=0, column=3, sticky="nsew")
     loop_s = tk.Entry(settings_lf, width=3)
-    loop_s.insert(0, "530")
+    loop_s.insert(0, "535")
     loop_s.grid(row=0, column=0)
     loop_s.bind("<FocusOut>", focus_out)
     l = tk.Label(settings_lf, text="秒执行一次")

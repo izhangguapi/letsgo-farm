@@ -1,6 +1,9 @@
 __pycache__/
 log/*
 error.log
+*.spec
 tempCodeRunnerFile.py
 blob_storage/
 webrtc_event_logs/
+dist/
+build/

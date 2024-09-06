@@ -27,7 +27,7 @@ def ok():
             rect[0],
             rect[1],
             1000,
-            600,
+            593,
             win32con.SWP_NOACTIVATE,
         )
         window.destroy()
