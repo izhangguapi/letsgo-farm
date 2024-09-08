@@ -18,7 +18,7 @@ def ok():
         # 窗口获取焦点
         # win32gui.SetForegroundWindow(hwnd)
         # 修改窗口大小
-        win32gui.MoveWindow(hwnd, rect[0], rect[1], 1000, 600, False)
+        win32gui.MoveWindow(hwnd, rect[0], rect[1], 1000, 593, False)
         # win32gui.SetWindowPos(
         #     hwnd,
         #     win32con.HWND_BOTTOM,
