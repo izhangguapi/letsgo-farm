@@ -3,3 +3,5 @@ paddleocr
 pywebview
 pywin32
 cefpython3
+pyinstaller
+backports.inspect

@@ -48,7 +48,7 @@ def screenshot_window(hwnd):
 
 # 查找窗口句柄
 # hwnd = win32gui.FindWindow(None, "LocalSend")
-hwnd = 7866038
+hwnd = 10618160
 # hwnd = 4719734
 if hwnd:
     screenshot_window(hwnd)

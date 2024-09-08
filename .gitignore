@@ -7,3 +7,4 @@ blob_storage/
 webrtc_event_logs/
 dist/
 build/
+exe/

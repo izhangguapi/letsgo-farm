@@ -10,26 +10,24 @@ def ok():
         myTools.hwnd = hwnd
         myTools.title = title.replace("元梦之星", "已控制")
         # print(f"句柄：{myTools.hwnd}")
-        # # print(f"标题：{myTools.title}")
+        # print(f"标题：{myTools.title}")
         # 获取窗口的位置和大小
         rect = win32gui.GetWindowRect(myTools.hwnd)
-        # 获取窗口客户区域的大小和位置
-        # rect = win32gui.GetClientRect(hwnd)
         # 激活窗口
         # win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
         # 窗口获取焦点
         # win32gui.SetForegroundWindow(hwnd)
         # 修改窗口大小
-        # win32gui.MoveWindow(hwnd, rect[0], rect[1], 1000, 600, False)
-        win32gui.SetWindowPos(
-            hwnd,
-            win32con.HWND_BOTTOM,
-            rect[0],
-            rect[1],
-            1000,
-            593,
-            win32con.SWP_NOACTIVATE,
-        )
+        win32gui.MoveWindow(hwnd, rect[0], rect[1], 1000, 600, False)
+        # win32gui.SetWindowPos(
+        #     hwnd,
+        #     win32con.HWND_BOTTOM,
+        #     rect[0],
+        #     rect[1],
+        #     1000,
+        #     593,
+        #     win32con.SWP_NOACTIVATE,
+        # )
         window.destroy()
     except:
         print("请选择窗口后再点击确定")

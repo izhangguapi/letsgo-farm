@@ -16,7 +16,28 @@
 
 使用该程序需要开通农场月卡！
 
-未开通星宝农场月卡使用该程序将只能钓鱼。
+## 前置条件
+
+1. 安装python，安装对应的库，进入letsgo-farm文件夹，在终端中输入如下命令：
+   ```shell
+   pip3 install -r requirements.txt
+   ```
+   如果长时间没有安装完成，请换成国内源(任选其一)：
+   ```shell
+   pip3 install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple
+   ```
+   ```shell
+   pip3 install -r requirements.txt -i https://pypi.mirrors.ustc.edu.cn/simple
+   ```
+   ```shell
+   pip3 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+   ```
+   ```shell
+   pip3 install -r requirements.txt -i https://pypi.douban.com/simple
+   ```
+   ```shell
+   pip3 install -r requirements.txt -i https://pypi.mirrors.ustc.edu.cn/simple
+   ```
 
 ## 郑重声明
 
