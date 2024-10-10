@@ -145,13 +145,6 @@ class CreateLF:
         else:
             mt.lgf_config["prayers_enable"] = self.enable.get()
 
-        # print(mt.lgf_config)
-        # if self.enable_v:
-        #     print("启用")
-        # if self.timer_v:
-        #     print("定时")
-        # pass
-
     def create(
         self,
         title,
@@ -164,53 +157,47 @@ class CreateLF:
         rowspan=1,
     ):
         self.lf = tk.LabelFrame(window, text=title, name=title)
-        # self.lf.grid(row=0, column=col, padx=px, pady=5)
         self.lf.grid(row=0, column=col, rowspan=rowspan, sticky="nsew")
-        row = 0
-        if is_enable:
-            enable = tk.Checkbutton(
-                self.lf,
-                text=enable_text,
-                variable=self.enable,
-            )
-            enable.grid(row=row, column=0, columnspan=5)
-            enable.bind("<Leave>", self.get_checkbtn)
-            row += 1
 
-        if is_timer:
-            timer = tk.Checkbutton(self.lf, text=timer_text, variable=self.timer)
-            timer.grid(row=row, column=0, columnspan=5)
-            timer.bind("<Leave>", self.get_checkbtn)
-            row += 1
+        enable = tk.Checkbutton(
+            self.lf,
+            text=enable_text,
+            variable=self.enable,
+        )
+        enable.grid(row=0, column=0, columnspan=5)
+        enable.bind("<Leave>", self.get_checkbtn)
+        enable.config(state=tk.DISABLED)
+
+        timer = tk.Checkbutton(self.lf, text=timer_text, variable=self.timer)
+        timer.grid(row=1, column=0, columnspan=5)
+        timer.bind("<Leave>", self.get_checkbtn)
+        timer.config(state=tk.DISABLED)
 
         h = tk.Entry(self.lf, width=2, name="h")
-        h.grid(row=row, column=0)
+        h.grid(row=2, column=0)
         h.bind("<FocusOut>", self.focus_out)
         h.bind("<Leave>", self.on_mouse_leave)
+        h.config(state=tk.DISABLED)
 
         lbhm = tk.Label(self.lf, text=":")
-        lbhm.grid(row=row, column=1)
+        lbhm.grid(row=2, column=1)
+        lbhm.config(state=tk.DISABLED)
 
         m = tk.Entry(self.lf, width=2, name="m")
-        m.grid(row=row, column=2)
+        m.grid(row=2, column=2)
         m.bind("<FocusOut>", self.focus_out)
         m.bind("<Leave>", self.on_mouse_leave)
+        m.config(state=tk.DISABLED)
 
         lbms = tk.Label(self.lf, text=":")
-        lbms.grid(row=row, column=3)
+        lbms.grid(row=2, column=3)
+        lbms.config(state=tk.DISABLED)
 
         s = tk.Entry(self.lf, width=2, name="s")
-        s.grid(row=row, column=4)
+        s.grid(row=2, column=4)
         s.bind("<FocusOut>", self.focus_out)
         s.bind("<Leave>", self.on_mouse_leave)
-
-        row += 1
-
-        if is_text:
-            prayers_text = tk.Text(self.lf, height=5, width=11, state=tk.DISABLED)
-            prayers_text.grid(row=row, column=0, columnspan=5)
-            prayers_text.bind("<FocusOut>", self.focus_out_text)
-            prayers_text.bind("<Leave>", self.on_mouse_leave)
+        s.config(state=tk.DISABLED)
 
 
 def create_other_lf():
@@ -241,8 +228,12 @@ def focus_out(event):
     mt.lgf_config["loop_s"] = int(event.widget.get())
 
 
+def get_lens_enable():
+    mt.lgf_config["cancel_lens_assist"] = lens_enable.get()
+
+
 def creat():
-    global window
+    global window, lens_enable
     window = tk.Tk()
     window.title("请选择游戏窗口")
 
@@ -252,17 +243,22 @@ def creat():
     pasture.create("牧场", 1)
     fishpond = CreateLF(window)
     fishpond.create("鱼塘", 2)
-    # prayers = CreateLF(window)
-    # prayers.create("祈愿", 3, is_enable=False, is_text=True, rowspan=2)
 
     settings_lf = tk.LabelFrame(window, text="设置", name="设置")
     settings_lf.grid(row=0, column=3, sticky="nsew")
     loop_s = tk.Entry(settings_lf, width=3)
-    loop_s.insert(0, "535")
+    loop_s.insert(0, "120")
     loop_s.grid(row=0, column=0)
     loop_s.bind("<FocusOut>", focus_out)
     l = tk.Label(settings_lf, text="秒执行一次")
     l.grid(row=0, column=1, columnspan=3)
+
+    lens_enable = tk.BooleanVar()
+    cancel_lens_enable = tk.Checkbutton(
+        settings_lf, text="取消镜头辅助", variable=lens_enable
+    )
+    cancel_lens_enable.grid(row=1, column=0, columnspan=5)
+    cancel_lens_enable.config(command=get_lens_enable)
 
     create_other_lf()
 

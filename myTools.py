@@ -16,10 +16,11 @@ lgf_config = {
     "fishpond_enable": True,
     "fishpond_timer": False,
     "fishpond_time": "",
-    "loop_s": 535,
+    "loop_s": 120,
     "prayers_enable": False,
     "prayers_time": "",
     "prayers_uid": [],
+    "cancel_lens_assist": False,
 }
 
 
@@ -165,7 +166,7 @@ class WindowController:
         # result = ctypes.windll.user32.PrintWindow(self.hwnd, saveDC.GetSafeHdc(), 0)
         saveDC.BitBlt((0, 0), (width, height), mfcDC, (x, y), win32con.SRCCOPY)
         # print("截图结果：", result)
-        
+
         # 从位图对象中保存图像
         bmpinfo = saveBitMap.GetInfo()
         bmpstr = saveBitMap.GetBitmapBits(True)

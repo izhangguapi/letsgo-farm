@@ -95,6 +95,11 @@ def fishpond_work():
 #     wcl.key_press("space")
 #     print("钓鱼完成", "green")
 
+def all_work():
+    """农场"""
+    find_drone()
+    mt.print_log("无人机执行全部工作")
+    wcl.key_press("q")
 
 def farm():
     """农场"""
@@ -143,6 +148,15 @@ def fishpond():
             return False
 
 
+def cancel_lens_assist():
+    lens = position["lens"]
+    mt.print_log("取消镜头辅助")
+    for i in lens:
+        wcl.mouse_move_press(i)
+        mt.sleep(1)
+
+
+
 def go_to(where=None):
     if where == "farm":
         data = key["go_to_farm"]
@@ -184,7 +198,8 @@ def initialization():
     # 点击一下跳跃
     wcl.mouse_move_press(position["jump"])
     mt.sleep(1)
-
+    if mt.lgf_config["cancel_lens_assist"]:
+        cancel_lens_assist()
 
 def start():
     # 初始化
@@ -194,15 +209,10 @@ def start():
         # 记录开始时间
         clw.set_now()
         # 解除省电模式
-        wcl.mouse_move_press(position["blank"])
-        # wcl.mouse_move_press(position["fishpond_btn"])
+        wcl.mouse_move_press(position["jump"])
         mt.sleep(1)
         # 执行鱼塘工作
-        fishpond()
-        # 执行牧场工作
-        pasture()
-        # # 执行农场工作
-        farm()
+        all_work()
         # 计算耗时
         clw.computing_time()
     mt.print_log("停止挂机")

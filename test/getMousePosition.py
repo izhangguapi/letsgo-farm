@@ -12,7 +12,7 @@ def get_mouse_pos_in_window(hwnd):
 
 
 # 获取窗口句柄
-hwnd = 5964962
+hwnd = 655506
 
 # 获取鼠标在窗口中的坐标
 while True:

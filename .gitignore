@@ -1,5 +1,4 @@
 __pycache__/
-log/*
 error.log
 *.spec
 tempCodeRunnerFile.py
