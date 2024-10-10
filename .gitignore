@@ -7,3 +7,4 @@ webrtc_event_logs/
 dist/
 build/
 exe/
+log/*
