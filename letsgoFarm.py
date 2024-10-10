@@ -96,7 +96,10 @@ def fishpond_work():
 #     print("钓鱼完成", "green")
 
 def all_work():
-    """农场"""
+    """全部"""
+    for _ in range(10):
+        wcl.mouse_move_press(position["blank"])
+        mt.sleep(0.2)
     find_drone()
     mt.print_log("无人机执行全部工作")
     wcl.key_press("q")
